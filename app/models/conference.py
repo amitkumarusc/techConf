@@ -5,7 +5,8 @@ db = MongoAlchemy()
 class Conference(db.Document):
 	query_class = BaseQuery
 	name = db.StringField()
-	date = db.StringField()	#Need to change it to date type
+	start_date = db.DateTimeField()
+	end_date = db.DateTimeField()
 	location = db.StringField()
 	desc = db.StringField()
 	url = db.StringField()
