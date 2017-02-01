@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_mongoalchemy import MongoAlchemy
-from models.conference import db, Conference
+from models.conference import db
 import time, requests, json
 
 app = Flask(__name__)
@@ -21,17 +21,6 @@ def not_found(error):
 @app.route('/')
 def home():
 	return render_template('index.html')
-
-	conference = Conference.query.first_or_404()
-	print dir(conference)
-	print "Conference is : ",str(conference)
-	return "Success"
-
-@app.route('/save')
-def save():
-	conference = Conference(name="Ruby Conf", date="12 Jan 2017", location="Bangalore", desc="", url="")
-	conference.save()
-	return "Success"
 
 @app.route('/test')
 def test():
