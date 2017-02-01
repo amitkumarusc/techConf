@@ -1,4 +1,5 @@
 import time
+import dbupdater
 from threading import Timer
 
 class Schedular(object):
@@ -25,3 +26,7 @@ class Schedular(object):
     def stop(self):
         self._timer.cancel()
         self.is_running = False
+
+def schedule_tasks():
+    print "Scheduling All Tasks"
+    notification_schedule = schedular.Schedular(3, dbupdater.fetch_conferences)

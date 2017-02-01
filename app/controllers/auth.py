@@ -4,6 +4,8 @@ import urllib
 import requests
 from flask import Flask, render_template, redirect, request, jsonify, Response
 
+from ..models.slackinfo import SlackInfo
+
 CLIENT_ID = app.config['CLIENT_ID']
 CLIENT_SECRET = app.config['CLIENT_SECRET']
 
@@ -18,7 +20,23 @@ def authsuccess():
 	if json_data['ok'] == False:
 		return 'Authentication failed! <a href="/">Go to Home</a>'
 
+	access_token = json_data['access_token']
+	bot_access_token = json_data['bot']['bot_access_token']
+	bot_user_id = json_data['bot']['bot_user_id']
+	channel_name = json_data['incoming_webhook']['channel']
+	channel_id = json_data['incoming_webhook']['channel_id']
+	incomming_webhook_url = json_data['incoming_webhook']['url']
+	team_id = json_data['team_id']
+	team_name = json_data['team_name']
+	user_id = json_data['user_id']
+
+	slack_info = SlackInfo(access_token=access_token, bot_access_token=bot_access_token, bot_user_id=bot_user_id,\
+		channel_name=channel_name, channel_id=channel_id, incomming_webhook_url=incomming_webhook_url,\
+		team_id=team_id, team_name=team_name, user_id=user_id)
+	slack_info.save()
+
 	return jsonify(json_data)
+
 
 @app.route('/authbegin')
 def authbegin():

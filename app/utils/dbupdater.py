@@ -1,6 +1,6 @@
 import requests, json
 from datetime import datetime
-from ..models.conference import db, Conference
+from ..models.conference import Conference
 
 def parse_date(raw_date):
 	year, month, day = map(int, raw_date.split('-'))
@@ -25,5 +25,11 @@ def fetch_conferences():
 		except:
 			location = conference['datelocation']
 		print "Conference Added : ", title
-		mConf = Conference(name=title, start_date=start_date, end_date=end_date, url=url, location=location, desc="")
-		mConf.save()
+		count = Conference.query.filter(Conference.name==title).count()
+		print "Count is : ",count
+		if count == 0:
+			print "Document not present. Inserting"
+			mConf = Conference(name=title, start_date=start_date, end_date=end_date, url=url, location=location, desc="")
+			mConf.save()
+		else:
+			print "Skip, as document is already present"

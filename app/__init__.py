@@ -8,25 +8,8 @@ app.config.from_object('config')
 db.init_app(app)
 
 from controllers import auth, query
-from utils import schedular, dbupdater
-
-def send_notifications(name):
-	url = 'https://hooks.slack.com/services/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'
-	headers = {'content-type': 'application/json'}
-	data = {'text' : "Time in my clock is :" + time.strftime('%X %x %Z')}
-	print name, time.strftime('%X %x %Z')
-	
-	dbupdater.fetch_conferences()
-
-	#resp = requests.post(url, headers=headers, data=json.dumps(data))
-	if False:#resp.status_code != 200:
-		print "Something went wrong! Unable to send notifications to slack"
-
-
-#notification_schedule = schedular.Schedular(3, send_notifications, "Amit Kumar")
-#print notification_schedule
-
-
+from utils import schedular, dbupdater, notifier
+from models.slackinfo import SlackInfo
 
 @app.errorhandler(404)
 def not_found(error):
@@ -49,5 +32,5 @@ def save():
 
 @app.route('/test')
 def test():
-	send_notifications('Amit')
+	notifier.notify_all()
 	return "Initiated"
