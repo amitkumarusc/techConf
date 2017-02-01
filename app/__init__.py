@@ -11,6 +11,9 @@ from controllers import auth, query
 from utils import schedular, dbupdater, notifier
 from models.slackinfo import SlackInfo
 
+#Start the schedular
+schedular.schedule_tasks()
+
 @app.errorhandler(404)
 def not_found(error):
 	return render_template('404.html'), 404

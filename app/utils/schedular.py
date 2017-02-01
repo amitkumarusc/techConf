@@ -1,5 +1,5 @@
 import time
-import dbupdater
+import dbupdater, notifier
 from threading import Timer
 
 class Schedular(object):
@@ -29,4 +29,6 @@ class Schedular(object):
 
 def schedule_tasks():
     print "Scheduling All Tasks"
-    notification_schedule = schedular.Schedular(3, dbupdater.fetch_conferences)
+    gb_update_schedule = Schedular(30*60, dbupdater.fetch_conferences)    #30 mins
+    notification_schedule = Schedular(10*60, notifier.notify_all)         #10 mins
+    print "Task Scheduled Successfully"
