@@ -1,6 +1,7 @@
 import requests, json
 from datetime import datetime
 from ..models.conference import Conference
+from notifier import send_to_all_channels, format_conference_data
 
 def parse_date(raw_date):
 	year, month, day = map(int, raw_date.split('-'))
@@ -11,7 +12,6 @@ def fetch_conferences():
 	url = 'https://talkfunnel.com/json'
 	resp = requests.get(url)
 	data = resp.json()
-	print len(data['spaces'])
 	for conference in data['spaces']:
 		title = conference['title'].strip()
 		url = conference['url'].strip()
@@ -24,12 +24,10 @@ def fetch_conferences():
 			location = str(conference['datelocation']).split(',', 1)[1].strip()
 		except:
 			location = conference['datelocation']
-		print "Conference Added : ", title
 		count = Conference.query.filter(Conference.name==title).count()
-		print "Count is : ",count
 		if count == 0:
 			print "Document not present. Inserting"
 			mConf = Conference(name=title, start_date=start_date, end_date=end_date, url=url, location=location, desc="")
 			mConf.save()
-		else:
-			print "Skip, as document is already present"
+			data = format_conference_data([mConf])
+			send_to_all_channels(data)

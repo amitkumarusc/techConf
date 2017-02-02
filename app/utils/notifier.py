@@ -5,9 +5,11 @@ from ..models.slackinfo import SlackInfo
 from flask import request, Response
 from ..models.conference import Conference
 
-def format_conference_data(conferences, user_id=None, page=0, per_page=3):
+def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify_all=False):
 	response = {}
 	response['attachments'] = []
+	if notify_all:
+		response['response_type'] = 'in_channel'
 	pretext = True
 	#conferences = Conference.query.all()
 	index = 0
@@ -47,10 +49,14 @@ def format_conference_data(conferences, user_id=None, page=0, per_page=3):
 
 def send_notification(webhook_url, data):
 	headers = {'content-type': 'application/json'}
-
-	resp = requests.post(webhook_url, headers=headers, data=json.dumps(data))
-	if resp.status_code != 200:
-		print "Something went wrong! Unable to send notifications to slack"
+	try:
+		resp = requests.post(webhook_url, headers=headers, data=json.dumps(data))
+		if resp.status_code != 200:
+			print "Something went wrong! Unable to send notifications to slack"
+			return
+	except:
+		print "Connection error"
+		return
 	print "Data sent to ", webhook_url
 
 
