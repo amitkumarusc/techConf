@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Home</title>
-	</head>
+{% extends "base.html" %}
 
-	<body>
-	<a href="/authbegin"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
-	</body>
-</html>
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<a href="/authbegin">
+	<img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
+</a>
+
+<div class="row">
+	{% for conference in conferences %}
+	<div class="col m4">
+		<div class="card blue-grey darken-1">
+			<div class="card-content white-text">
+				<span class="card-title">{{ conference.name }}</span>
+				<div class="card-content">
+					<p>
+						Start Date : {{ conference.start_date.date() }} <br>
+						End Date : {{ conference.end_date.date() }} <br>
+						Location : {{ conference.location }} <br>
+					</p>
+				</div>
+			</div>
+			<div class="card-action">
+				<a href="{{ conference.url }}">More Info</a>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+
+{% endblock %}
+

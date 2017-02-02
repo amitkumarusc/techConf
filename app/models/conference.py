@@ -25,10 +25,14 @@ class Conference(db.Document):
 		return datetime.date(year,month,day)
 
 	@staticmethod
+	def fetch_all_conferences():
+		return Conference.query.all()
+
+	@staticmethod
 	def fetch_upcoming_conferences(start_date):
-		temp = Conference.query.all()
+		all_conferences = Conference.fetch_all_conferences()
 		conferences = []
-		for conference in temp:
+		for conference in all_conferences:
 			if conference.start_date.date() > start_date and conference.start_date.date() < Conference.add_months(start_date, 1):
 				conferences.append(conference)
 		return conferences
@@ -39,9 +43,9 @@ class Conference(db.Document):
 
 	@staticmethod
 	def fetch_from_location(location):
-		temp = Conference.query.all()
+		all_conferences = Conference.fetch_all_conferences()
 		conferences = []
-		for conference in temp:
+		for conference in all_conferences:
 			ratio = Conference.similar(location, conference.location.lower())
 			if ratio > 0.5:
 				conferences.append(conference)
