@@ -1,7 +1,5 @@
 from .. import app
-import json
-import urllib
-import requests
+import json, urllib, requests
 from flask import Flask, render_template, redirect, request, jsonify, Response
 
 from ..models.slackinfo import SlackInfo
@@ -35,6 +33,7 @@ def authsuccess():
 		team_id=team_id, team_name=team_name, user_id=user_id)
 	slack_info.save()
 
+	return redirect('/')
 	return jsonify(json_data)
 
 

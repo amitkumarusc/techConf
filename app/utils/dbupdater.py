@@ -2,6 +2,7 @@ import requests, json
 from datetime import datetime
 from ..models.conference import Conference
 from notifier import send_to_all_channels, format_conference_data
+import psycopg2
 
 def parse_date(raw_date):
 	year, month, day = map(int, raw_date.split('-'))
@@ -12,6 +13,7 @@ def fetch_conferences():
 	url = 'https://talkfunnel.com/json'
 	resp = requests.get(url)
 	data = resp.json()
+
 	for conference in data['spaces']:
 		title = conference['title'].strip()
 		url = conference['url'].strip()
@@ -31,3 +33,10 @@ def fetch_conferences():
 			mConf.save()
 			data = format_conference_data([mConf])
 			send_to_all_channels(data)
+
+
+
+
+
+
+
