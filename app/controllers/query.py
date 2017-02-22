@@ -1,9 +1,11 @@
-from .. import app, db
-import os, re
 import json
+import re
+
 from flask import request, Response
-from ..utils.notifier import format_conference_data
+
+from .. import app
 from ..models.conference import Conference
+from ..utils.notifier import format_conference_data
 
 
 def parse_parameters(parameters):

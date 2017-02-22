@@ -1,7 +1,6 @@
 from .. import db
 from flask_mongoalchemy import BaseQuery
 
-
 class SlackInfo(db.Document):
     query_class = BaseQuery
     access_token = db.StringField()

@@ -69,11 +69,8 @@ def send_to_all_channels(data):
 
 
 def notify_all():
-    print "Getting upcomming conferences"
     upcoming_conferences = Conference.fetch_upcoming_conferences(datetime.now().date())
-    print upcoming_conferences
     formatted_data = format_conference_data(upcoming_conferences)
-    print "Formatted data : ", formatted_data
     if formatted_data:
         # data = {'text' : "Time in my clock is :" + time.strftime('%X %x %Z')}
         send_to_all_channels(formatted_data)
