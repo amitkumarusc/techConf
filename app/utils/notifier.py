@@ -1,9 +1,9 @@
-import requests, time, json, os
 from datetime import datetime
-from ..models.slackinfo import SlackInfo
-
-from flask import request, Response
+import json
+import requests
+import tweet_fetcher
 from ..models.conference import Conference
+from ..models.slackinfo import SlackInfo
 
 
 def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify_all=False):
@@ -26,7 +26,7 @@ def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify
 
         data['title'] = conference.name
         data['text'] = 'Date : %s to %s\nLocation : %s\nDescription : %s' % (
-        conference.start_date.date(), conference.end_date.date(), conference.location, conference.desc)
+            conference.start_date.date(), conference.end_date.date(), conference.location, conference.desc)
         data['title_link'] = conference.url
         data['color'] = '#36a64f'
         if pretext:
@@ -53,6 +53,7 @@ def send_notification(webhook_url, data):
     try:
         resp = requests.post(webhook_url, headers=headers, data=json.dumps(data))
         if resp.status_code != 200:
+            print resp.text
             print "Something went wrong! Unable to send notifications to slack"
             return
     except:
@@ -65,7 +66,16 @@ def send_to_all_channels(data):
     channels = SlackInfo.query.all()
     for channel in channels:
         print "Sending to : ", channel.channel_name
-        send_notification(channel.incomming_webhook_url, data)
+        send_notification(channel.incoming_webhook_url, data)
+
+
+def send_tweets():
+    print "Sending tweets"
+    tweet = tweet_fetcher.get_most_retweeted()
+    response = {'attachments': []}
+    data = {'pretext': '*Some trending news about conferences*', 'mrkdwn_in': ['text', 'pretext'], 'title': 'Happening on twitter','text': tweet, 'color': '#36a64f'}
+    response['attachments'].append(data)
+    send_to_all_channels(response)
 
 
 def notify_all():

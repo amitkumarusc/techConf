@@ -1,6 +1,6 @@
-import time
-import dbupdater, notifier
 from threading import Timer
+import dbupdater
+import notifier
 from .. import app
 
 
@@ -32,6 +32,7 @@ class Schedular(object):
 
 def schedule_tasks():
     print "Scheduling All Tasks"
-    gb_update_schedule = Schedular(app.config['DB_UPDATER_TIME'], dbupdater.fetch_conferences)
-    notification_schedule = Schedular(app.config['NOTIFICATION_TIME'], notifier.notify_all)
+    #gb_update_schedule = Schedular(app.config['DB_UPDATER_TIME'], dbupdater.fetch_conferences)
+    #notification_schedule = Schedular(app.config['NOTIFICATION_TIME'], notifier.notify_all)
+    notification_schedule = Schedular(app.config['NOTIFICATION_TIME'], notifier.send_tweets)
     print "Task Scheduled Successfully"

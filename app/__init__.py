@@ -12,7 +12,7 @@ from utils import schedular, dbupdater, notifier
 from models.slackinfo import SlackInfo
 
 # Start the schedular
-#schedular.schedule_tasks()
+schedular.schedule_tasks()
 
 
 @app.errorhandler(404)
