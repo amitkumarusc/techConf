@@ -2,3 +2,4 @@ venv
 *.pyc
 ngrok
 .idea/
+secret.txt

@@ -1,9 +1,9 @@
-import twitter
+import twitter, os
 
-consumer_key = 'ghR96YyXAGb4tvdujdybxONST'
-consumer_secret = 'X3HqKxnplwKQI425S5bZmiB8jBVnZ94MdXdfva1g8R4ptczlU1'
-access_token_key = '501890611-8yfgTC3Jm72Wcz7rJZxkGW3DKDY2Bfz3rnJQbBF6'
-access_token_secret = 'NIOn9eMBneqIfiiTIrpXy4clIcu30S1vb5cGd8fZj9Mbv'
+consumer_key = os.environ['CONSUMER_KEY']
+consumer_secret = os.environ['CONSUMER_SECRET']
+access_token_key = os.environ['ACCESS_TOKEN_KEY']
+access_token_secret = os.environ['ACCESS_TOKEN_SECRET']
 
 api = twitter.Api(consumer_key=consumer_key,
                   consumer_secret=consumer_secret,
