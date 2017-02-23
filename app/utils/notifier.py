@@ -1,9 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import requests
 import tweet_fetcher
 from ..models.conference import Conference
 from ..models.slackinfo import SlackInfo
+from .. import app
 
 
 def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify_all=False):
@@ -65,15 +66,25 @@ def send_notification(webhook_url, data):
 def send_to_all_channels(data):
     channels = SlackInfo.query.all()
     for channel in channels:
-        print "Sending to : ", channel.channel_name
-        send_notification(channel.incoming_webhook_url, data)
+        hours, minutes, seconds = app.config['SEND_SAME_TWEET_TIMER']
+        if str(hash(str(data))) != channel.text_hash or datetime.now() - channel.last_sent_on > timedelta(hours=hours,
+                                                                                                          minutes=minutes,
+                                                                                                          seconds=seconds):
+            print "Sending to : ", channel.channel_name
+            send_notification(channel.incoming_webhook_url, data)
+            channel.text_hash = str(hash(str(data)))
+            channel.last_sent_on = datetime.now()
+            channel.save()
+        else:
+            print "Message already sent to the channel"
 
 
 def send_tweets():
     print "Sending tweets"
     tweet = tweet_fetcher.get_most_retweeted()
     response = {'attachments': []}
-    data = {'pretext': '*Some trending news about conferences*', 'mrkdwn_in': ['text', 'pretext'], 'title': 'Happening on twitter','text': tweet, 'color': '#36a64f'}
+    data = {'pretext': '*Some trending news about conferences*', 'mrkdwn_in': ['text', 'pretext'],
+            'title': 'Happening on twitter', 'text': tweet, 'color': '#36a64f'}
     response['attachments'].append(data)
     send_to_all_channels(response)
 
