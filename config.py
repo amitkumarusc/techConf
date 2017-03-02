@@ -39,3 +39,6 @@ NOTIFICATION_TIME = 1 * 10
 # Tweets Timings
 # (hours, minutes, seconds)
 SEND_SAME_TWEET_TIMER = (0, 1, 0)
+
+# TechConf Url
+TECH_CONF_URL = 'http://localhost:3000/'

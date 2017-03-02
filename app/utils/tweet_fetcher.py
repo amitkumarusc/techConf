@@ -1,4 +1,5 @@
 import twitter, os
+from datetime import datetime
 
 consumer_key = os.environ['CONSUMER_KEY']
 consumer_secret = os.environ['CONSUMER_SECRET']
@@ -10,7 +11,7 @@ api = twitter.Api(consumer_key=consumer_key,
                   access_token_key=access_token_key,
                   access_token_secret=access_token_secret)
 
-twitter_channels = ['@rubyconf', '@rubyconfindia']
+twitter_channels = ['@rubyconf', '@rubyconfindia'] #['@GeekAmitYadav']
 
 
 def get_most_retweeted():
@@ -20,11 +21,15 @@ def get_most_retweeted():
 
     formatted = []
     for tweet in tweets:
-        formatted.append((tweet.retweet_count, tweet.text))
+        time = tweet.created_at.split(' ')
+        time.pop(4)
+        time = ' '.join(time)
+        datetime_object = datetime.strptime(time, '%a %b %d %H:%M:%S %Y')
+        formatted.append((tweet.retweet_count, datetime_object, tweet.text))
 
-    formatted.sort(key=lambda x: x[0])
+    formatted.sort(key=lambda x: (x[0], x[1]))
     formatted.reverse()
-    return formatted[0][1].replace("RT @", "@")
+    return formatted[0][2].replace("RT @", "@")
 
 
 if __name__ == "__main__":

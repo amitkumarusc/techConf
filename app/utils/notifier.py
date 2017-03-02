@@ -18,7 +18,7 @@ def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify
     for conference in conferences:
         data = {}
 
-        if index <= page * per_page:
+        if index < page * per_page:
             index += 1
             continue
         if index > (page + 1) * per_page:
@@ -32,7 +32,7 @@ def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify
         data['color'] = '#36a64f'
         if pretext:
             if user_id:
-                data['pretext'] = "*Hi <@" + user_id + ">! Some of the conferences I managed to find!*"
+                data['pretext'] = "*Hi <@" + user_id + ">! Some of the conferences I managed to find! For further details visit* %s"% app.config['TECH_CONF_URL']
             else:
                 data['pretext'] = "*Conferences in database*"
             data['mrkdwn_in'] = ['text', 'pretext']
@@ -40,7 +40,7 @@ def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify
         response['attachments'].append(data)
 
     if len(response['attachments']) == 0:
-        if user_id == None:
+        if user_id is None:
             return None
         data = {}
         data['color'] = '#e60000'
