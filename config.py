@@ -42,4 +42,4 @@ NOTIFICATION_TIME = 2 * 60
 SEND_SAME_TWEET_TIMER = (0, 1, 0)
 
 # TechConf Url
-TECH_CONF_URL = 'http://localhost:3000/'
+TECH_CONF_URL = 'https://sheltered-tundra-40581.herokuapp.com/'

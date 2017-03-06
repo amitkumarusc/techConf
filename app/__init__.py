@@ -1,11 +1,11 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
-from models.conference import db, Conference
+from models.conference import db
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object('config')
-db.init_app(app)
+#db.init_app(app)
 
 pg_db = SQLAlchemy(app)
 
@@ -14,6 +14,7 @@ Bootstrap(app)
 from controllers import auth, query
 from utils import schedular, dbupdater, notifier
 from models.slackinfo import SlackInfo
+from utils.jsontoobject import Conference
 
 # Start the schedular
 schedular.schedule_tasks()
