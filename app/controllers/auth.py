@@ -22,6 +22,7 @@ def authsuccess():
     token_url = token_url + '?' + urllib.urlencode(params)
     response = requests.get(token_url)
     json_data = json.loads(response.text)
+    print json_data
     if not json_data['ok']:
         if len(redirect_back_url) > 0:
             temp_redirect_url = redirect_back_url + '?' + urllib.urlencode({"ok": 'false'})
@@ -44,7 +45,7 @@ def authsuccess():
                            incoming_webhook_url=incoming_webhook_url,
                            team_id=team_id, team_name=team_name, user_id=user_id,
                            text_hash='', last_sent_on=datetime(year=2000, day=01, month=01))
-    slack_info.save()
+    print "Value after saving : ",slack_info.save()
 
     if len(redirect_back_url) > 0:
         temp_redirect_url = redirect_back_url + '?' + urllib.urlencode({"ok": 'true'})
@@ -62,7 +63,7 @@ def authbegin():
     print "redirect_back_url : ", redirect_back_url
 
     slack_url = 'https://slack.com/oauth/authorize'
-    params = {'client_id': CLIENT_ID, 'redirect_uri': 'https://9d862f13.ngrok.io/authsuccess',
+    params = {'client_id': CLIENT_ID, 'redirect_uri': 'https://668ffe0f.ngrok.io/authsuccess',
               'scope': 'incoming-webhook,commands,bot'}
     slack_url = slack_url + '?' + urllib.urlencode(params)
     print "Making a get request to : ", slack_url

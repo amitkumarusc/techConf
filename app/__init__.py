@@ -1,10 +1,14 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from models.conference import db, Conference
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object('config')
 db.init_app(app)
+
+pg_db = SQLAlchemy(app)
+
 Bootstrap(app)
 
 from controllers import auth, query
