@@ -1,14 +1,8 @@
-import requests, json
-from datetime import datetime
-from ..models.conference import Conference
+import requests
+
 from notifier import send_to_all_channels, format_conference_data
-import psycopg2
-
-
-def parse_date(raw_date):
-    year, month, day = map(int, raw_date.split('-'))
-    return datetime(year=year, day=day, month=month)
-
+from utils import parse_date
+from ..models.conference import Conference
 
 def fetch_conferences():
     print "fetching json"
