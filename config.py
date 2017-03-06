@@ -43,3 +43,6 @@ SEND_SAME_TWEET_TIMER = (0, 1, 0)
 
 # TechConf Url
 TECH_CONF_URL = 'https://sheltered-tundra-40581.herokuapp.com/'
+
+#Heroku python app
+REDIRECT_URL = 'https://ancient-badlands-14496.herokuapp.com/'
