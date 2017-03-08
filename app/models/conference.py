@@ -1,21 +1,35 @@
-from flask_mongoalchemy import MongoAlchemy, BaseQuery
+from ..utils.utils import parse_date
+import urlparse
+import requests
+import urllib
+from .. import app, db
 import datetime, calendar
-from difflib import SequenceMatcher
 
-db = MongoAlchemy()
-
-
-class Conference(db.Document):
-    query_class = BaseQuery
-    name = db.StringField()
-    start_date = db.DateTimeField()
-    end_date = db.DateTimeField()
-    location = db.StringField()
-    desc = db.StringField()
-    url = db.StringField()
+class Conference(object):
+    def __init__(self, conf_in_json):
+        self.name = conf_in_json['title']
+        self.location = conf_in_json['location']
+        self.desc = conf_in_json['description']
+        self.start_date = parse_date(conf_in_json['start_date'])
+        self.end_date = parse_date(conf_in_json['end_date'])
+        self.url = conf_in_json['url']
+        if not urlparse.urlparse(self.url).scheme:
+            self.url = "http://" + conf_in_json['url']
 
     def __str__(self):
-        return '%s at %s' % (self.name, self.location)
+        print '%s at %s on %s' % (self.name, self.location, self.start_date)
+
+    @staticmethod
+    def fetch_all_conferences(query='', start_date='', end_date=''):
+        tech_conf_url = app.config['TECH_CONF_URL'] + 'search.json'
+        params = {'query': query, 'search_start_date': start_date, 'search_end_date': end_date}
+        tech_conf_url = tech_conf_url + '?' + urllib.urlencode(params)
+        conf_data = requests.get(tech_conf_url)
+        conferences_json = conf_data.json()
+        conferences = []
+        for conf in conferences_json:
+            conferences.append(Conference(conf))
+        return conferences
 
     @staticmethod
     def add_months(sourcedate, months):
@@ -25,30 +39,9 @@ class Conference(db.Document):
         day = min(sourcedate.day, calendar.monthrange(year, month)[1])
         return datetime.date(year, month, day)
 
-    @staticmethod
-    def fetch_all_conferences():
-        return Conference.query.all()
 
     @staticmethod
-    def fetch_upcoming_conferences(start_date):
-        all_conferences = Conference.fetch_all_conferences()
-        conferences = []
-        for conference in all_conferences:
-            if conference.start_date.date() > start_date and conference.start_date.date() < Conference.add_months(start_date, 4):
-                conferences.append(conference)
-        return conferences
-
-    @staticmethod
-    def similar(a, b):
-        return SequenceMatcher(None, a, b).ratio()
-
-    @staticmethod
-    def fetch_from_location(location):
-        all_conferences = Conference.fetch_all_conferences()
-        conferences = []
-        for conference in all_conferences:
-            ratio = Conference.similar(location, conference.location.lower())
-            if ratio > 0.5:
-                conferences.append(conference)
-
-        return conferences
+    def fetch_upcoming_conferences():
+        start_date = str(datetime.datetime.now().date())
+        end_date = str(Conference.add_months(datetime.datetime.now().date(), 4))
+        return Conference.fetch_all_conferences(start_date=start_date, end_date=end_date)

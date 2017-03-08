@@ -1,4 +1,4 @@
-from .. import pg_db as db
+from .. import db
 
 
 class SlackInfo(db.Model):

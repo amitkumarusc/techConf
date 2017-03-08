@@ -2,7 +2,7 @@ import requests
 
 from notifier import send_to_all_channels, format_conference_data
 from utils import parse_date
-from ..models.conference import Conference
+#from ..models.conference import Conference
 
 def fetch_conferences():
     print "fetching json"
@@ -22,11 +22,11 @@ def fetch_conferences():
             location = str(conference['datelocation']).split(',', 1)[1].strip()
         except:
             location = conference['datelocation']
-        count = Conference.query.filter(Conference.name == title).count()
-        if count == 0:
-            print "Document not present. Inserting"
-            mConf = Conference(name=title, start_date=start_date, end_date=end_date, url=url, location=location,
-                               desc="")
-            mConf.save()
-            data = format_conference_data([mConf])
-            send_to_all_channels(data)
+        # count = Conference.query.filter(Conference.name == title).count()
+        # if count == 0:
+        #     print "Document not present. Inserting"
+        #     mConf = Conference(name=title, start_date=start_date, end_date=end_date, url=url, location=location,
+        #                        desc="")
+        #     mConf.save()
+        #     data = format_conference_data([mConf])
+        #     send_to_all_channels(data)

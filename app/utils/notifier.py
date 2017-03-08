@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 import json
 import requests
 import tweet_fetcher
-from ..models.conference import Conference
 from ..models.slackinfo import SlackInfo
+from ..models.conference import Conference
 from .. import app
 
 
@@ -13,7 +13,6 @@ def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify
     if notify_all:
         response['response_type'] = 'in_channel'
     pretext = True
-    # conferences = Conference.query.all()
     index = 0
     for conference in conferences:
         data = {}
@@ -90,7 +89,7 @@ def send_tweets():
 
 
 def notify_all():
-    upcoming_conferences = Conference.fetch_upcoming_conferences(datetime.now().date())
+    upcoming_conferences = Conference.fetch_upcoming_conferences()
     formatted_data = format_conference_data(upcoming_conferences)
     if formatted_data:
         # data = {'text' : "Time in my clock is :" + time.strftime('%X %x %Z')}

@@ -11,7 +11,9 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 MONGOALCHEMY_DATABASE = 'techConf'
 MONGOALCHEMY_CONNECTION_STRING = os.environ.get('MONGO_URL')
 
-SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/techConf'
+SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+
+#'postgresql://localhost/techConf'
 
 # Application threads. A common general assumption is
 # using 2 per available processor cores - to handle
@@ -42,4 +44,7 @@ NOTIFICATION_TIME = 2 * 60
 SEND_SAME_TWEET_TIMER = (0, 1, 0)
 
 # TechConf Url
-TECH_CONF_URL = 'http://localhost:3000/'
+TECH_CONF_URL = 'https://sheltered-tundra-40581.herokuapp.com/'
+
+#Heroku python app
+REDIRECT_URL = 'https://ancient-badlands-14496.herokuapp.com/authsuccess'

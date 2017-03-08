@@ -1,20 +1,15 @@
 import json
-import re
-import requests
-import urllib
 from flask import request, Response
 
 from .. import app
 from ..models.conference import Conference
 from ..utils.notifier import format_conference_data
-from ..utils.jsontoobject import Conference as ConfObj
 
 SWITCH = True
 
 
 def parse_parameters(parameters):
     options = {'more': None}
-    location = re.findall(r'"([^"]*)"', parameters)
     temp = parameters.split("-", 1)
     if len(temp) == 2:
         parameters = '-' + temp[1].strip()
@@ -86,19 +81,7 @@ def command():
         response = usage_response()
     else:
         options = parse_parameters(command_options)
-
-        if SWITCH:
-            tech_conf_url = app.config['TECH_CONF_URL'] + 'search.json'
-            params = {'query': options['location'], 'search_start_date': '', 'search_end_date': ''}
-            tech_conf_url = tech_conf_url + '?' + urllib.urlencode(params)
-            conf_data = requests.get(tech_conf_url)
-            conferences_json = conf_data.json()
-            conferences = []
-            for conf in conferences_json:
-                conferences.append(ConfObj(conf))
-        else:
-            conferences = Conference.fetch_from_location(options['location'])
-        print conferences
+        conferences = Conference.fetch_all_conferences(query=options['location'])
         response = format_conference_data(conferences, user_id=user_id, page=options['more'], per_page=5,
                                           notify_all=options['all'])
 

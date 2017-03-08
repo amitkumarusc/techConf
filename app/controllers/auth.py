@@ -61,9 +61,9 @@ def authbegin():
     global redirect_back_url
     redirect_back_url = request.args.get('redirect_to', default='')
     print "redirect_back_url : ", redirect_back_url
-
+    redirect_back_url = 'https://sheltered-tundra-40581.herokuapp.com/'
     slack_url = 'https://slack.com/oauth/authorize'
-    params = {'client_id': CLIENT_ID, 'redirect_uri': 'https://668ffe0f.ngrok.io/authsuccess',
+    params = {'client_id': CLIENT_ID, 'redirect_uri': app.config['REDIRECT_URL'],
               'scope': 'incoming-webhook,commands,bot'}
     slack_url = slack_url + '?' + urllib.urlencode(params)
     print "Making a get request to : ", slack_url
