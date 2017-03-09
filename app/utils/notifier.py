@@ -104,3 +104,11 @@ def notify_all():
     if formatted_data:
         # data = {'text' : "Time in my clock is :" + time.strftime('%X %x %Z')}
         send_to_all_channels(formatted_data)
+
+
+def get_slack_details():
+    channels = SlackInfo.query.all()
+    data = ''
+    for channel in channels:
+        data += channel.channel_name + "   " + channel.incoming_webhook_url + "<br><br>"
+    return data

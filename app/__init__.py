@@ -45,3 +45,8 @@ def drop_all():
 def create_all():
     db.create_all()
     return "All table schemas created"
+
+
+@app.route('/slack_info')
+def slack_info():
+    return notifier.get_slack_details()
