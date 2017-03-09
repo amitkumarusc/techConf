@@ -43,6 +43,10 @@ class SlackInfo(db.Model):
         db.session.delete(self)
         return session_commit()
 
+    def __str__(self):
+        return "%s %s %s %s %s %s %s %s %s " %(self.access_token, self.bot_access_token, self.bot_user_id, self.channel_name, self.channel_id,
+                       self.incoming_webhook_url, self.team_id, self.team_name, self.user_id)
+
 
 def session_commit():
     try:
