@@ -4,7 +4,9 @@ import requests
 import tweet_fetcher
 from ..models.slackinfo import SlackInfo
 from ..models.conference import Conference
+from ..models.message import Message
 from .. import app
+from utils import calculate_hash
 
 
 def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify_all=False):
@@ -62,18 +64,26 @@ def send_notification(webhook_url, data):
     print "Data sent to ", webhook_url
 
 
+def is_already_sent(data, channel):
+    messages_already_sent = channel.messages.all()
+    data_hash = calculate_hash(data)
+    hours, minutes, seconds = app.config['SEND_SAME_TWEET_TIMER']
+    for message in messages_already_sent:
+        if data_hash == message.text_hash:
+            if datetime.now() - message.last_sent_on < timedelta(hours=hours, minutes=minutes, seconds=seconds):
+                print "Message was recently sent to the channel"
+                return True
+    return False
+
+
 def send_to_all_channels(data):
     channels = SlackInfo.query.all()
     for channel in channels:
-        hours, minutes, seconds = app.config['SEND_SAME_TWEET_TIMER']
-        if str(hash(str(data))) != channel.text_hash or datetime.now() - channel.last_sent_on > timedelta(hours=hours,
-                                                                                                          minutes=minutes,
-                                                                                                          seconds=seconds):
+        if not is_already_sent(data, channel):
             print "Sending to : ", channel.channel_name
             send_notification(channel.incoming_webhook_url, data)
-            channel.text_hash = str(hash(str(data)))
-            channel.last_sent_on = datetime.now()
-            channel.save()
+            message = Message(data, datetime.now(), channel.id)
+            message.save()
         else:
             print "Message already sent to the channel"
 

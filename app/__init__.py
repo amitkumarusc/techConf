@@ -15,7 +15,7 @@ from models.slackinfo import SlackInfo
 from models.conference import Conference
 
 # Start the schedular
-schedular.schedule_tasks()
+#schedular.schedule_tasks()
 
 
 @app.errorhandler(404)
@@ -30,5 +30,18 @@ def home():
 
 @app.route('/test')
 def test():
-    notifier.notify_all()
+    notifier.send_to_all_channels("sample data")
     return "Initiated"
+
+
+@app.route('/drop_all')
+def drop_all():
+    db.reflect()
+    db.drop_all()
+    return 'All tables dropped! Now go to this link to create all tables <a href="/create_all">Create all tables</a>'
+
+
+@app.route('/create_all')
+def create_all():
+    db.create_all()
+    return "All table schemas created"

@@ -1,9 +1,13 @@
-from ..utils.utils import parse_date
-import urlparse
-import requests
+import calendar
+import datetime
 import urllib
-from .. import app, db
-import datetime, calendar
+import urlparse
+
+import requests
+
+from .. import app
+from ..utils.utils import parse_date
+
 
 class Conference(object):
     def __init__(self, conf_in_json):
