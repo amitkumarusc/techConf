@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -9,7 +10,7 @@ db = SQLAlchemy(app)
 
 Bootstrap(app)
 
-from controllers import auth, query
+from controllers import auth, query, interactive_messages
 from utils import schedular, dbupdater, notifier
 from models.slackinfo import SlackInfo
 from models.conference import Conference
@@ -50,3 +51,7 @@ def create_all():
 @app.route('/slack_info')
 def slack_info():
     return notifier.get_slack_details()
+
+@app.route('/send_temp')
+def send_temp():
+    return json.dumps(notifier.collect_user_interests())

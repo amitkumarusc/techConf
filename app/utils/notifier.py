@@ -7,7 +7,7 @@ from ..models.conference import Conference
 from ..models.message import Message
 from .. import app
 from utils import calculate_hash
-
+from MessageFormatter import ask_question
 
 def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify_all=False):
     response = {}
@@ -111,4 +111,12 @@ def get_slack_details():
     data = ''
     for channel in channels:
         data += channel.channel_name + "   " + channel.incoming_webhook_url + "<br><br>"
+    return data
+
+
+def collect_user_interests():
+    url = 'https://hooks.slack.com/services/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'
+    tags = ['Python', 'Ruby', 'Java']
+    data = ask_question('Are you finding this information useful?', tags)
+    send_notification(url, data)
     return data
