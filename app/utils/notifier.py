@@ -7,7 +7,7 @@ from ..models.conference import Conference
 from ..models.message import Message
 from .. import app
 from utils import calculate_hash
-from MessageFormatter import ask_question
+from message_formatter import ask_question
 
 def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify_all=False):
     response = {}
@@ -110,7 +110,7 @@ def get_slack_details():
     channels = SlackInfo.query.all()
     data = ''
     for channel in channels:
-        data += channel.channel_name + "   " + channel.incoming_webhook_url + "<br><br>"
+        data += str(channel) + "<br><br>"
     return data
 
 

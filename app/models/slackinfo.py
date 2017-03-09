@@ -43,9 +43,6 @@ class SlackInfo(db.Model):
         db.session.delete(self)
         return session_commit()
 
-    def __str__(self):
-        return '%s for team %s' % (self.channel_name, self.team_name)
-
 
 def session_commit():
     try:
