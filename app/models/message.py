@@ -6,7 +6,7 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text_hash = db.Column(db.String(255))
     last_sent_on = db.Column(db.DateTime())
-    channel_id = db.Column(db.Integer, db.ForeignKey('slack_info.id'))
+    channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'))
 
     def __init__(self, text_msg, last_sent_on, channel_id):
         self.channel_id = channel_id

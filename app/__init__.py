@@ -12,11 +12,14 @@ Bootstrap(app)
 
 from controllers import auth, query, interactive_messages
 from utils import schedular, dbupdater, notifier
-from models.slackinfo import SlackInfo
+from models.channel import Channel
+from models.tag import Tag
 from models.conference import Conference
 
 # Start the schedular
 #schedular.schedule_tasks()
+
+Tag.create_tags()
 
 
 @app.errorhandler(404)
@@ -31,7 +34,7 @@ def home():
 
 @app.route('/test')
 def test():
-    notifier.send_to_all_channels("sample data")
+    notifier.send_tweets()
     return "Initiated"
 
 
@@ -54,4 +57,5 @@ def slack_info():
 
 @app.route('/send_temp')
 def send_temp():
-    return json.dumps(notifier.collect_user_interests())
+    notifier.give_tag_suggestion_to_all()
+    return 'Suggested tags sent to channels'

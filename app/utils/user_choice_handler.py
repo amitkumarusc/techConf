@@ -1,5 +1,7 @@
 from ..models.tag import Tag
-from ..models.slackinfo import SlackInfo
+from ..models.channel import Channel
+import json
+from flask import Response
 
 
 def parse_user_choice(user_response):
@@ -9,8 +11,15 @@ def parse_user_choice(user_response):
             print "User responded as Not Interested"
             return
         channel_text_id = user_response['channel']['id']
-        channel_id = SlackInfo.query.filter_by(channel_id=channel_text_id).first().id
-        tag = Tag(tag_name, channel_id)
+        channel = Channel.query.filter_by(channel_id=channel_text_id).first()
+        tag = Tag.query.filter_by(name=tag_name).first()
+        if tag is None:
+            tag = Tag(tag_name)
+        tag.channels.append(channel)
         tag.save()
     else:
         print "Some new category questions are being asked from user. Add the handling here also"
+
+    resp = {'text': 'Your response has been recorded', 'replace_original': True, 'response_type': 'ephemeral'}
+    js = json.dumps(resp)
+    return Response(js, status=200, mimetype='application/json')

@@ -6,7 +6,7 @@ from flask import redirect, request, jsonify
 from datetime import datetime
 
 from .. import app
-from ..models.slackinfo import SlackInfo
+from ..models.channel import Channel
 
 CLIENT_ID = app.config['CLIENT_ID']
 CLIENT_SECRET = app.config['CLIENT_SECRET']
@@ -40,11 +40,11 @@ def authsuccess():
     team_name = json_data['team_name']
     user_id = json_data['user_id']
 
-    slack_info = SlackInfo(access_token=access_token, bot_access_token=bot_access_token, bot_user_id=bot_user_id,
-                           channel_name=channel_name, channel_id=channel_id,
-                           incoming_webhook_url=incoming_webhook_url,
-                           team_id=team_id, team_name=team_name, user_id=user_id,
-                           text_hash='', last_sent_on=datetime(year=2000, day=01, month=01))
+    slack_info = Channel(access_token=access_token, bot_access_token=bot_access_token, bot_user_id=bot_user_id,
+                         channel_name=channel_name, channel_id=channel_id,
+                         incoming_webhook_url=incoming_webhook_url,
+                         team_id=team_id, team_name=team_name, user_id=user_id,
+                         text_hash='', last_sent_on=datetime(year=2000, day=01, month=01))
     print "Value after saving : ",slack_info.save()
 
     if len(redirect_back_url) > 0:

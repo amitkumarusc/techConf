@@ -1,8 +1,6 @@
 from .. import db
-from message import Message
 
-
-class SlackInfo(db.Model):
+class Channel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     access_token = db.Column(db.String(512))
     bot_access_token = db.Column(db.String(512))
@@ -16,7 +14,7 @@ class SlackInfo(db.Model):
     text_hash = db.Column(db.String(255))
     last_sent_on = db.Column(db.DateTime())
     messages = db.relationship('Message', backref="channel", cascade="all, delete-orphan", lazy='dynamic')
-    tags = db.relationship('Tag', backref="channel", cascade="all, delete-orphan", lazy='dynamic')
+    #tags = db.relationship('Tag', backref="channel", cascade="all, delete-orphan", lazy='dynamic')
 
     def __init__(self, access_token, bot_access_token, bot_user_id, channel_name, channel_id,
                  incoming_webhook_url, team_id, team_name, user_id, text_hash, last_sent_on):

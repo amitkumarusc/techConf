@@ -38,6 +38,7 @@ CLIENT_SECRET = 'af8bf6d0093d033ebe0c6f7953e8da9c'
 # Schedule timings
 DB_UPDATER_TIME = 20 * 60
 NOTIFICATION_TIME = 2 * 60
+SUGGEST_TAG_TIME = 1 * 60
 
 # Tweets Timings
 # (hours, minutes, seconds)
