@@ -1,4 +1,5 @@
 from .. import db
+from flask_sqlalchemy import sqlalchemy
 
 
 class BaseModel(db.Model):
@@ -15,8 +16,9 @@ class BaseModel(db.Model):
         db.session.delete(self)
         return self.session_commit()
 
-    def session_commit(self):
+    @staticmethod
+    def session_commit():
         try:
             db.session.commit()
-        except:
-            "error"
+        except sqlalchemy.exc.SQLAlchemyError as e:
+            print "Database error: ", str(e)

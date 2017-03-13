@@ -1,7 +1,8 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-import json
+import logging
+
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -17,10 +18,9 @@ from models.tag import Tag
 from models.conference import Conference
 
 # Start the schedular
-#schedular.schedule_tasks()
+schedular.schedule_tasks()
 
 Tag.create_tags()
-
 
 @app.errorhandler(404)
 def not_found(error):
@@ -59,3 +59,4 @@ def slack_info():
 def send_temp():
     notifier.give_tag_suggestion_to_all()
     return 'Suggested tags sent to channels'
+

@@ -47,5 +47,5 @@ class Conference(object):
     @staticmethod
     def fetch_upcoming_conferences():
         start_date = str(datetime.datetime.now().date())
-        end_date = str(Conference.add_months(datetime.datetime.now().date(), 4))
+        end_date = str(Conference.add_months(datetime.datetime.now().date(), app.config['UPCOMING_CONF_MONTHS']))
         return Conference.fetch_all_conferences(start_date=start_date, end_date=end_date)

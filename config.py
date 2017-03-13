@@ -39,10 +39,13 @@ CLIENT_SECRET = 'af8bf6d0093d033ebe0c6f7953e8da9c'
 DB_UPDATER_TIME = 20 * 60
 NOTIFICATION_TIME = 2 * 60
 SUGGEST_TAG_TIME = 1 * 60
+TWITTER_NOTIFICATION_TIME = 3 * 30
+UPCOMING_CONF_MONTHS = 3
+
 
 # Tweets Timings
 # (hours, minutes, seconds)
-SEND_SAME_TWEET_TIMER = (0, 1, 0)
+SEND_SAME_MSG_TIMER = (0, 1, 0)
 
 # TechConf Url
 TECH_CONF_URL = 'https://sheltered-tundra-40581.herokuapp.com/'

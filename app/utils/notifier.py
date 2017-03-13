@@ -28,7 +28,7 @@ def send_notification(webhook_url, data):
 def is_already_sent(data, channel):
     messages_already_sent = channel.messages.all()
     data_hash = calculate_hash(data)
-    hours, minutes, seconds = app.config['SEND_SAME_TWEET_TIMER']
+    hours, minutes, seconds = app.config['SEND_SAME_MSG_TIMER']
     for message in messages_already_sent:
         if data_hash == message.text_hash:
             if datetime.now() - message.last_sent_on < timedelta(hours=hours, minutes=minutes, seconds=seconds):
