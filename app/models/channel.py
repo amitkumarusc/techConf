@@ -1,7 +1,8 @@
 from .. import db
+from base_model import BaseModel
 
 
-class SlackInfo(db.Model):
+class Channel(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     access_token = db.Column(db.String(512))
     bot_access_token = db.Column(db.String(512))
@@ -14,6 +15,7 @@ class SlackInfo(db.Model):
     user_id = db.Column(db.String(255))
     text_hash = db.Column(db.String(255))
     last_sent_on = db.Column(db.DateTime())
+    messages = db.relationship('Message', backref="channel", cascade="all, delete-orphan", lazy='dynamic')
 
     def __init__(self, access_token, bot_access_token, bot_user_id, channel_name, channel_id,
                  incoming_webhook_url, team_id, team_name, user_id, text_hash, last_sent_on):
@@ -29,23 +31,7 @@ class SlackInfo(db.Model):
         self.text_hash = text_hash
         self.last_sent_on = last_sent_on
 
-    def save(self):
-        db.session.add(self)
-        return session_commit()
-
-    def update(self):
-        return session_commit()
-
-    def delete(self):
-        db.session.delete(self)
-        return session_commit()
-
     def __str__(self):
-        return '%s for team %s' % (self.channel_name, self.team_name)
-
-
-def session_commit():
-    try:
-        db.session.commit()
-    except:
-        "error"
+        return "%s %s %s %s %s %s %s %s %s " % (
+            self.access_token, self.bot_access_token, self.bot_user_id, self.channel_name, self.channel_id,
+            self.incoming_webhook_url, self.team_id, self.team_name, self.user_id)

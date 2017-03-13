@@ -33,6 +33,8 @@ class Schedular(object):
 def schedule_tasks():
     print "Scheduling All Tasks"
     #gb_update_schedule = Schedular(app.config['DB_UPDATER_TIME'], dbupdater.fetch_conferences)
-    #notification_schedule = Schedular(app.config['NOTIFICATION_TIME'], notifier.notify_all)
-    tweets_schedule = Schedular(app.config['NOTIFICATION_TIME'], notifier.send_tweets)
+    notification_schedule = Schedular(app.config['NOTIFICATION_TIME'], notifier.send_upcoming_conference_notification)
+    tweets_schedule = Schedular(app.config['TWITTER_NOTIFICATION_TIME'], notifier.send_tweets)
+    suggest_tags = Schedular(app.config['SUGGEST_TAG_TIME'], notifier.give_tag_suggestion_to_all)
+
     print "Task Scheduled Successfully"

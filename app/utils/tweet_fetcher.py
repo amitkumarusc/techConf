@@ -1,5 +1,7 @@
 import twitter, os
 from datetime import datetime
+from ..models.tag import Tag
+import random
 
 consumer_key = os.environ['CONSUMER_KEY']
 consumer_secret = os.environ['CONSUMER_SECRET']
@@ -11,14 +13,9 @@ api = twitter.Api(consumer_key=consumer_key,
                   access_token_key=access_token_key,
                   access_token_secret=access_token_secret)
 
-twitter_channels = ['@rubyconf', '@rubyconfindia'] #['@GeekAmitYadav']
 
-
-def get_most_retweeted():
-    tweets = []
-    for channel in twitter_channels:
-        tweets.extend(api.GetUserTimeline(screen_name=channel))
-
+def get_most_retweeted_by_channel(channel):
+    tweets = api.GetUserTimeline(screen_name=channel)
     formatted = []
     for tweet in tweets:
         time = tweet.created_at.split(' ')
@@ -30,6 +27,13 @@ def get_most_retweeted():
     formatted.sort(key=lambda x: (x[0], x[1]))
     formatted.reverse()
     return formatted[0][2].replace("RT @", "@")
+
+
+def get_most_retweeted():
+    tags = Tag.query.all()
+    print "TAGS are: ", tags
+    tag = random.choice(tags)
+    return get_most_retweeted_by_channel(tag.twitter_handle), tag
 
 
 if __name__ == "__main__":
