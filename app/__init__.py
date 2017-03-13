@@ -51,6 +51,15 @@ def create_all():
     return "All table schemas created"
 
 
+@app.route('/drop_all_c')
+def drop_all_c():
+    db.engine.execute("DROP TABLE if exists tags cascade")
+    db.engine.execute("DROP TABLE if exists tag cascade")
+    db.engine.execute("DROP TABLE if exists message cascade")
+    db.engine.execute("DROP TABLE if exists channel cascade")
+    return "All table schemas created"
+
+
 @app.route('/slack_info')
 def slack_info():
     return notifier.get_slack_details()
