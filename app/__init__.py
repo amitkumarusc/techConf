@@ -20,7 +20,7 @@ from models.conference import Conference
 # Start the schedular
 schedular.schedule_tasks()
 
-Tag.create_tags()
+#Tag.create_tags()
 
 @app.errorhandler(404)
 def not_found(error):
