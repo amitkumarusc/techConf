@@ -22,7 +22,7 @@ def get_most_retweeted_by_channel(channel):
         time.pop(4)
         time = ' '.join(time)
         datetime_object = datetime.strptime(time, '%a %b %d %H:%M:%S %Y')
-        formatted.append((tweet.retweet_count, datetime_object, tweet.text))
+        formatted.append((tweet.retweet_count, datetime_object, tweet.text.encode('utf-8')))
 
     formatted.sort(key=lambda x: (x[0], x[1]))
     formatted.reverse()
