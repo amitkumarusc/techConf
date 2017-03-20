@@ -74,7 +74,7 @@ def usage_response():
     return response
 
 
-def format_conference_data(conferences, user_id=None, page=0, per_page=3, notify_all=False):
+def format_conference_data(conferences, user_id=None, page=0, per_page=1, notify_all=False):
     response = {}
     response['attachments'] = []
     if notify_all:
