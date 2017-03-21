@@ -10,13 +10,12 @@ db = SQLAlchemy(app)
 Bootstrap(app)
 
 from controllers import auth, query, interactive_messages
-from utils import schedular, dbupdater, notifier
+from utils import dbupdater, notifier
 from models.channel import Channel
 from models.tag import Tag
 from models.conference import Conference
+import utils.timely.schedular as custom_schedular
 
-# Start the schedular
-schedular.schedule_tasks()
 
 @app.errorhandler(404)
 def not_found(error):
@@ -30,7 +29,7 @@ def home():
 
 @app.route('/test')
 def test():
-    notifier.send_tweets()
+    custom_schedular.start()
     return "Initiated"
 
 
@@ -70,3 +69,5 @@ if not db.engine.dialect.has_table(db.engine, 'tag'):
     create_all()
 
 Tag.create_tags()
+
+custom_schedular.start()

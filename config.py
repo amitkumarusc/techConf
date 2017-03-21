@@ -8,9 +8,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Define the database - we are working with
 # SQLite for this example
-MONGOALCHEMY_DATABASE = 'techConf'
-MONGOALCHEMY_CONNECTION_STRING = os.environ.get('MONGO_URL')
-
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 #'postgresql://localhost/techConf'
@@ -32,16 +29,18 @@ CSRF_SESSION_KEY = "secret"
 SECRET_KEY = "secret"
 
 # slack developer keys
-CLIENT_ID = '133078337040.134000073828'
-CLIENT_SECRET = 'af8bf6d0093d033ebe0c6f7953e8da9c'
+CLIENT_ID = os.environ['SLACK_CLIENT_ID']
+CLIENT_SECRET = os.environ['SLACK_CLIENT_SECRET']
 
 # Schedule timings
 DB_UPDATER_TIME = 20 * 60
 NOTIFICATION_TIME = 3 * 60 + 1
 SUGGEST_TAG_TIME = 2 * 60 + 1
 TWITTER_NOTIFICATION_TIME = 4 * 60
-UPCOMING_CONF_MONTHS = 3
+UPCOMING_CONF_DAYS = 90
 
+#New Schedular
+NOTIFICATIONS_PER_DAY = 5
 
 # Tweets Timings
 # (hours, minutes, seconds)
