@@ -12,7 +12,7 @@ def run_daily_notifier():
 def start():
     print "Starting the main schedular"
     sched = BackgroundScheduler()
-    sched.add_job(run_daily_notifier, 'interval', minutes=3, args=[])
+    sched.add_job(run_daily_notifier, 'interval', days=1, args=[])
     sched.start()
     print "All tasks scheduled successfully"
     return 0
