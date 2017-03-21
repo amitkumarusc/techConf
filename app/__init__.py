@@ -27,6 +27,11 @@ def home():
     return render_template('index.html', title="Home", conferences=Conference.fetch_all_conferences())
 
 
+@app.route('/wakeme')
+def wakeme():
+    return "Not Sleeping"
+
+
 @app.route('/test')
 def test():
     custom_schedular.start()
