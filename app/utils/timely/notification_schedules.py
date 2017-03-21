@@ -4,7 +4,7 @@ import random
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from ..notifier import send_tweets, send_upcoming_conference_notification
+from ..notifier import send_tweets, send_upcoming_conference_notification, give_tag_suggestion_to_all
 
 sched = None
 logger = None
@@ -20,6 +20,13 @@ def send_twitter_notification(should_exit=False):
 def send_conf_notification(should_exit=False):
     logger.info("[{}] - Sending conference notification".format(datetime.now()))
     send_upcoming_conference_notification()
+    if should_exit:
+        sched.shutdown(wait=False)
+
+
+def send_tag_suggestions(should_exit=False):
+    logger.info("[{}] - Sending tag suggestions".format(datetime.now()))
+    give_tag_suggestion_to_all()
     if should_exit:
         sched.shutdown(wait=False)
 
@@ -62,12 +69,14 @@ def notification_schedules():
 
     twitter_notificatons_count = 10
     conf_notifications_count = 1
+    tag_suggestions_count = 1
 
     twitter_times = get_random_times(twitter_notificatons_count, lower_bound, upper_bound)
     conf_times = get_random_times(conf_notifications_count, lower_bound, upper_bound)
 
     schedule_jobs(twitter_times, send_twitter_notification)
     schedule_jobs(conf_times, send_conf_notification)
+    schedule_jobs(tag_suggestions_count, send_tag_suggestions)
 
     logger.info("[{}] - Adding notification schedules".format(datetime.now()))
 
