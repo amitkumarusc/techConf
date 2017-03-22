@@ -31,7 +31,6 @@ def get_most_retweeted_by_channel(channel):
 
 def get_most_retweeted():
     tags = Tag.query.all()
-    print "TAGS are: ", tags
     tag = random.choice(tags)
     return get_most_retweeted_by_channel(tag.twitter_handle), tag
 

@@ -43,9 +43,30 @@ class Conference(object):
         day = min(sourcedate.day, calendar.monthrange(year, month)[1])
         return datetime.date(year, month, day)
 
+    @staticmethod
+    def add_days(sourcedate, days):
+        return sourcedate + datetime.timedelta(days=days)
 
     @staticmethod
     def fetch_upcoming_conferences():
         start_date = str(datetime.datetime.now().date())
-        end_date = str(Conference.add_months(datetime.datetime.now().date(), app.config['UPCOMING_CONF_MONTHS']))
+        end_date = str(Conference.add_days(datetime.datetime.now().date(), app.config['UPCOMING_CONF_DAYS']))
+        return Conference.fetch_all_conferences(start_date=start_date, end_date=end_date)
+
+    @staticmethod
+    def fetch_next_week_conferences():
+        start_date = str(datetime.datetime.now().date())
+        end_date = str(Conference.add_days(datetime.datetime.now().date(), 7))
+        return Conference.fetch_all_conferences(start_date=start_date, end_date=end_date)
+
+    @staticmethod
+    def fetch_next_two_days_conferences():
+        start_date = str(datetime.datetime.now().date())
+        end_date = str(Conference.add_days(datetime.datetime.now().date(), 2))
+        return Conference.fetch_all_conferences(start_date=start_date, end_date=end_date)
+
+    @staticmethod
+    def fetch_next_day_conferences():
+        start_date = str(datetime.datetime.now().date())
+        end_date = str(Conference.add_days(datetime.datetime.now().date(), 1))
         return Conference.fetch_all_conferences(start_date=start_date, end_date=end_date)
